@@ -1,10 +1,15 @@
 package com.Spectro_Systems.Student.Management.service;
 
 import com.Spectro_Systems.Student.Management.exception.StudentAlreadyExistsException;
+import com.Spectro_Systems.Student.Management.exception.StudentNotFoundException;
 import com.Spectro_Systems.Student.Management.model.Student;
 import com.Spectro_Systems.Student.Management.repo.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -20,6 +25,13 @@ public class StudentService {
             );
         }
         return studentRepo.save(student);
+    }
+    public Page<Student> getStudents(Pageable pageable){
+        return studentRepo.findAll(pageable);
+    }
+    public Student getStudent(Long id){
+        return studentRepo.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with the given ID "));
     }
 
 }

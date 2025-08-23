@@ -4,10 +4,10 @@ import com.Spectro_Systems.Student.Management.model.Student;
 import com.Spectro_Systems.Student.Management.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/students")
@@ -20,5 +20,13 @@ public class StudentController {
     @PostMapping
     public Student createStudent(@RequestBody @Valid Student student){
         return studentService.createStudent(student);
+    }
+    @GetMapping
+    public Page<Student>getStudents(Pageable pageable){
+            return studentService.getStudents(pageable);
+    }
+    @GetMapping("/{id}")
+    public Student getStudent(@PathVariable Long id){
+        return studentService.getStudent(id);
     }
 }

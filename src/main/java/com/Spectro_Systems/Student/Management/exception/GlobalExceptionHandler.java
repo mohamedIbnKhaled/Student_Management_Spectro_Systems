@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(StudentAlreadyExistsException.class)
-    public ResponseEntity<Object>handleStudentNotFoundException(StudentAlreadyExistsException exception){
+    public ResponseEntity<Object>handleStudentAlreadyExistsException(StudentAlreadyExistsException exception){
         return ResponseEntity.status(HttpStatus.CONFLICT.value())
                 .body(exception.getMessage());
     }
@@ -23,6 +23,11 @@ public class GlobalExceptionHandler {
                 .orElse("Validation error");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
                 .body(errorMessage);
+    }
+    @ExceptionHandler(StudentNotFoundException.class)
+    public ResponseEntity<Object>handleStudentNotFoundException(StudentNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.CONFLICT.value())
+                .body(exception.getMessage());
     }
 
 }
