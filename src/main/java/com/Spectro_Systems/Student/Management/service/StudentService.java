@@ -42,5 +42,10 @@ public class StudentService {
         student.setDateOfBirth(studentUpdated.getDateOfBirth());
        return studentRepo.save(student);
     }
+    public void deleteStudent(Long id){
+        Student student= studentRepo.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with the given ID "));
+        studentRepo.delete(student);
+    }
 
 }
