@@ -29,4 +29,8 @@ public class StudentController {
     public Student getStudent(@PathVariable Long id){
         return studentService.getStudent(id);
     }
+    @PutMapping("/{id}")
+    public Student updateStudent(@PathVariable Long id,@RequestBody @Valid Student student){
+        return  studentService.updateStudent(id,student);
+    }
 }

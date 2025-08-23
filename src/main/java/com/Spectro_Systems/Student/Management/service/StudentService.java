@@ -33,5 +33,14 @@ public class StudentService {
         return studentRepo.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found with the given ID "));
     }
+    public Student updateStudent(Long id,Student studentUpdated){
+       Student student= studentRepo.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found with the given ID "));
+       student.setFirstName(studentUpdated.getFirstName());
+       student.setLastName(studentUpdated.getLastName());
+       student.setEmail(studentUpdated.getEmail());
+        student.setDateOfBirth(studentUpdated.getDateOfBirth());
+       return studentRepo.save(student);
+    }
 
 }
