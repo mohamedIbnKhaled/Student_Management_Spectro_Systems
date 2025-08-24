@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,13 @@ public class UserService {
     private final UserRepo userRepo;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
+    private final JwtService jwtService;
     @Autowired
-    public UserService(UserRepo userRepo, AuthenticationManager authenticationManager, PasswordEncoder encoder){
+    public UserService(UserRepo userRepo, AuthenticationManager authenticationManager, PasswordEncoder encoder,JwtService jwtService){
         this.userRepo=userRepo;
         this.authenticationManager=authenticationManager;
         this.encoder=encoder;
+        this.jwtService=jwtService;
     }
     public User addUser(RegisterDTO registerDTO){
         if (userRepo.findByUsername(registerDTO.getUsername())!=null){
@@ -46,7 +47,8 @@ public class UserService {
                 )
         );
         if(authentication.isAuthenticated()){
-            return "success";
+            User user = userRepo.findByUsername(loginDTo.getUsername());
+            return jwtService.generateToken(user.getUsername(),user.getRole().name());
         }
         throw new BadCredentialsException("Invalid credentials");
     }
