@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private String  secretKey;
+    private final String  secretKey;
     public JwtService(){
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
